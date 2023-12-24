@@ -14,8 +14,6 @@ const COLOR_WHITE_TRANSPARENT = Color(1.0, 1.0, 1.0, 0.0)
 ## Keeps track of the character displayed on either side.
 var _displayed := {left = null, right = null}
 
-#@onready var _tween: Tween = $Tween
-#@onready var _tween: Tween = create_tween()
 @onready var _left_sprite: Sprite2D = $Left
 @onready var _right_sprite: Sprite2D = $Right
 
@@ -23,9 +21,6 @@ var _displayed := {left = null, right = null}
 func _ready() -> void:
 	_left_sprite.hide()
 	_right_sprite.hide()
-	#_tween.connect("tween_all_completed", Callable(self, "_on_Tween_tween_all_completed"))
-	# TODO
-	#_tween.finished.connect(_on_tween_finished)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -37,8 +32,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func display(character: Character, side: String = SIDE.LEFT, expression := "", animation := "") -> void:
-#	assert(side in SIDE.values())
-
 	# Keeps track of a character that's already displayed on a given side
 	var sprite: Sprite2D = _left_sprite if side == SIDE.LEFT else _right_sprite
 	if character == _displayed.left:
@@ -63,16 +56,19 @@ func _enter(from_side: String, sprite: Sprite2D) -> void:
 	var start := sprite.position + Vector2(offset, 0.0)
 	var end := sprite.position
 
-	#_tween.interpolate_property(
-		#sprite, "position", start, end, 0.5, Tween.TRANS_QUINT, Tween.EASE_OUT
-	#)
-	var tween = create_tween() 
-	#sprite.position = start
-	tween.tween_property(sprite, "position", end, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUINT)
-	#tween.interpolate_property(sprite, "modulate", COLOR_WHITE_TRANSPARENT, Color.WHITE, 0.25)
-	#sprite.modulate = COLOR_WHITE_TRANSPARENT
-	tween.tween_property(sprite, "modulate", Color.WHITE, 0.25).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_LINEAR)
-	#_tween.start()
+	var tween = create_tween()
+	tween.set_parallel()
+	
+	(tween.tween_property(sprite, "position", end, 0.5)
+		.from(start)
+		.set_ease(Tween.EASE_OUT)
+		.set_trans(Tween.TRANS_QUINT))
+		
+	(tween.tween_property(sprite, "modulate", Color.WHITE, 0.25)
+		.from(COLOR_WHITE_TRANSPARENT)
+		.set_ease(Tween.EASE_IN_OUT)
+		.set_trans(Tween.TRANS_LINEAR))
+		
 	tween.finished.connect(_on_tween_finished)
 
 	# Set up the sprite
@@ -88,28 +84,20 @@ func _leave(from_side: String, sprite: Sprite2D) -> void:
 	var end := sprite.position + Vector2(offset, 0.0)
 
 	var tween = create_tween() 
+	tween.set_parallel()
 
-	#_tween.interpolate_property(
-		#sprite, "position", start, end, 0.5, Tween.TRANS_QUINT, Tween.EASE_OUT
-	#)
-	tween.set_trans(Tween.TRANS_QUINT)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(sprite, "position", end, 0.5)
-	#_tween.interpolate_property(
-		#sprite,
-		#"modulate",
-		#Color.WHITE,
-		#COLOR_WHITE_TRANSPARENT,
-		#0.25,
-		#Tween.TRANS_LINEAR,
-		#Tween.EASE_OUT,
-		#0.25
-	#)
-	tween.set_trans(Tween.TRANS_LINEAR)
-	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(sprite, "modulate", COLOR_WHITE_TRANSPARENT, 0.25).set_delay(0.25)
-	#_tween.start()
-	#_tween.seek(0.0)
+	(tween.tween_property(sprite, "position", end, 0.5)
+		.from(start)
+		.set_trans(Tween.TRANS_QUINT)
+		.set_ease(Tween.EASE_OUT))
+		
+	(tween.tween_property(sprite, "modulate", COLOR_WHITE_TRANSPARENT, 0.25)
+		.from(Color.WHITE)
+		.set_trans(Tween.TRANS_LINEAR)
+		.set_ease(Tween.EASE_OUT)
+		.set_delay(0.25))
+		
+	tween.finished.connect(_on_tween_finished)
 
 
 func _on_tween_finished() -> void:
