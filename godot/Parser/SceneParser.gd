@@ -1,6 +1,6 @@
 ## Takes in token list and produces a `SyntaxTree` representation of the token list using the `parse` function
 class_name SceneParser
-extends Reference
+extends RefCounted
 
 ## Names for the possible kind of expressions supported by the parser.
 const EXPRESSION_TYPES := {
@@ -55,7 +55,8 @@ class FunctionExpression:
 	extends BaseExpression
 	var arguments: Array
 
-	func _init(type: String, value: String, arguments: Array).(type, value) -> void:
+	func _init(type: String, value: String, arguments: Array) -> void:
+		super(type, value)
 		self.type = type
 		self.value = value
 		self.arguments = arguments
@@ -66,7 +67,8 @@ class ChoiceBlockExpression:
 	extends BaseExpression
 	var label := ""
 
-	func _init(type: String, value: Array, label: String).(type, value) -> void:
+	func _init(type: String, value: Array, label: String) -> void:
+		super(type, value)
 		self.type = type
 		self.value = value
 		self.label = label
@@ -77,7 +79,8 @@ class ConditionalExpression:
 	extends BaseExpression
 	var block: Array
 
-	func _init(type: String, value, block: Array).(type, value) -> void:
+	func _init(type: String, value, block: Array) -> void:
+		super(type, value)
 		self.type = type
 		self.value = value
 		self.block = block
@@ -96,7 +99,7 @@ class ConditionalTreeExpression:
 		if_block: ConditionalExpression,
 		elif_block: Array,
 		else_block: ConditionalExpression
-	).(type, value) -> void:
+	) -> void:
 		self.type = type
 		self.value = value
 		self.if_block = if_block

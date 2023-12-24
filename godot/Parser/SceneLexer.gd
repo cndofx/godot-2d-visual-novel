@@ -1,6 +1,6 @@
 ## Reads a scene _text file and turns it into a list of `Token` objects, using its `tokenize()` method.
 class_name SceneLexer
-extends Reference
+extends RefCounted
 
 # The constants below list reserved keywords and built-in commands.
 const BUILT_IN_COMMANDS := {
@@ -113,13 +113,12 @@ class DialogueScript:
 
 ## Reads a text file and returns its content.
 func read_file_content(path: String) -> String:
-	var file := File.new()
+	var file := FileAccess.open(path, FileAccess.READ)
 
-	if not file.file_exists(path):
+	if not file:
 		push_error("Could not find the script with path: %s" % path)
 		return ""
 
-	file.open(path, File.READ)
 	var script := file.get_as_text()
 	file.close()
 	return script
@@ -175,7 +174,9 @@ func tokenize(input_text: String) -> Array:
 		elif character.is_valid_identifier():
 			tokens.append(_tokenize_symbol(script))
 		else:
-			push_error("Found unidentified character: %s" % character)
+			push_error("Found unidentified character: '%s'" % character)
+			push_error("char code: %s" % character.to_utf8_buffer())
+			
 
 		script.move_to_next_character()
 
