@@ -113,13 +113,12 @@ class DialogueScript:
 
 ## Reads a text file and returns its content.
 func read_file_content(path: String) -> String:
-	var file := File.new()
+	var file := FileAccess.open(path, FileAccess.READ)
 
-	if not file.file_exists(path):
+	if not file:
 		push_error("Could not find the script with path: %s" % path)
 		return ""
 
-	file.open(path, File.READ)
 	var script := file.get_as_text()
 	file.close()
 	return script

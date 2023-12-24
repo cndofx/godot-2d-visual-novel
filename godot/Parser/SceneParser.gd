@@ -99,7 +99,7 @@ class ConditionalTreeExpression:
 		if_block: ConditionalExpression,
 		elif_block: Array,
 		else_block: ConditionalExpression
-	).(type, value) -> void:
+	) -> void:
 		self.type = type
 		self.value = value
 		self.if_block = if_block
