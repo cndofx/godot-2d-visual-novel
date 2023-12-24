@@ -5,16 +5,14 @@ const SAVE_FILE_LOCATION := "user://2DVisualNovelDemo.save"
 
 
 func add_variable(name: String, value) -> void:
-	var save_file: File = File.new()
+	var save_file = FileAccess.open(SAVE_FILE_LOCATION, FileAccess.READ_WRITE)
 
-	save_file.open(SAVE_FILE_LOCATION, File.READ_WRITE)
-
+	var json = JSON.new()
+	var parse_result = json.parse(save_file.get_as_text())
 	var data: Dictionary = (
-	var test_json_conv = JSON.new()
-	test_json_conv.parse(save_file.get_as_text())
-		test_json_conv.get_data()
-		if save_file.get_as_text()
-		else {variables = {}}
+		json.data
+		if parse_result == OK
+		else { variables = {} }
 	)
 
 	if name != "":
@@ -28,21 +26,14 @@ func add_variable(name: String, value) -> void:
 
 
 func get_stored_variables_list() -> Dictionary:
-	var save_file: File = File.new()
+	var save_file := FileAccess.open(SAVE_FILE_LOCATION, FileAccess.READ)
 
-	# Stop if the save file doesn't exist
-	if not save_file.file_exists(SAVE_FILE_LOCATION):
-		return {}
-
-	save_file.open(SAVE_FILE_LOCATION, File.READ)
-
-	var test_json_conv = JSON.new()
-	test_json_conv.parse(save_file.get_as_text())
-	var data: Dictionary = test_json_conv.get_data()
+	var json := JSON.new()
+	json.parse(save_file.get_as_text()) 
 
 	save_file.close()
 
-	return data.variables
+	return json.data.variables
 
 
 # Used to evaluate the variables' values
