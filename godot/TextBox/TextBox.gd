@@ -33,8 +33,9 @@ func _ready() -> void:
 	_rich_text_label.text = ""
 	_rich_text_label.visible_characters = 0
 
+	# TODO
 	#_tween.connect("tween_all_completed", Callable(self, "_on_Tween_tween_all_completed"))
-	_tween.finished.connect(_on_tween_finished)
+	#_tween.finished.connect(_on_tween_finished)
 	_choice_selector.connect("choice_made", Callable(self, "_on_ChoiceSelector_choice_made"))
 
 	_skip_button.connect("timer_ticked", Callable(self, "_on_SkipButton_timer_ticked"))
@@ -50,7 +51,9 @@ func advance_dialogue() -> void:
 	if _blinking_arrow.visible:
 		emit_signal("next_requested")
 	else:
-		_tween.seek(INF)
+		# TODO
+		#_tween.seek(INF)
+		pass
 
 
 func display(text: String, character_name := "", speed := display_speed) -> void:
@@ -91,10 +94,10 @@ func set_bbcode_text(text: String) -> void:
 
 func _begin_dialogue_display() -> void:
 	var character_count := _rich_text_label.get_total_character_count()
-	_tween.interpolate_property(
-		_rich_text_label, "visible_characters", 0, character_count, character_count / display_speed
-	)
-	_tween.start()
+	_rich_text_label.visible_characters = 0
+	var tween = create_tween()
+	tween.tween_property(_rich_text_label, "visible_characters", character_count, character_count / display_speed)
+	tween.finished.connect(_on_tween_finished)
 
 
 func fade_in_async() -> void:

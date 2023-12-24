@@ -74,9 +74,10 @@ func run_scene() -> void:
 		# Choices.
 		elif node is SceneTranspiler.ChoiceTreeNode:
 			# Temporary fix for the buttons not showing when there are consecutive choice nodes
-			await get_tree().idle_frame
-			await get_tree().idle_frame
-			await get_tree().idle_frame
+			#await get_tree().idle_frame
+			#await get_tree().idle_frame
+			#await get_tree().idle_frame
+			await get_tree().create_timer(0.1).timeout
 
 			_text_box.display_choice(node.choices)
 
@@ -133,12 +134,12 @@ func load_scene(dialogue: SceneTranspiler.DialogueTree) -> void:
 func _appear_async() -> void:
 	_anim_player.play("fade_in")
 	await _anim_player.animation_finished
-	await _text_box.fade_in_async().completed
+	await _text_box.fade_in_async()
 	emit_signal("transition_finished")
 
 
 func _disappear_async() -> void:
-	await _text_box.fade_out_async().completed
+	await _text_box.fade_out_async()
 	_anim_player.play("fade_out")
 	await _anim_player.animation_finished
 	emit_signal("transition_finished")

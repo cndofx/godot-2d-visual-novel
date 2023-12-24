@@ -6,14 +6,19 @@ const SAVE_FILE_LOCATION := "user://2DVisualNovelDemo.save"
 
 func add_variable(name: String, value) -> void:
 	var save_file = FileAccess.open(SAVE_FILE_LOCATION, FileAccess.READ_WRITE)
-
-	var json = JSON.new()
-	var parse_result = json.parse(save_file.get_as_text())
-	var data: Dictionary = (
-		json.data
-		if parse_result == OK
-		else { variables = {} }
-	)
+	
+	var data: Dictionary
+	if save_file:
+		var json = JSON.new()
+		var parse_result = json.parse(save_file.get_as_text())
+		data = (
+			json.data
+			if parse_result == OK
+			else { variables = {} }
+		)
+	else:
+		save_file = FileAccess.open(SAVE_FILE_LOCATION, FileAccess.WRITE_READ)
+		data = { variables = {} }
 
 	if name != "":
 		if not data.has("variables"):
