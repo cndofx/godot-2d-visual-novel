@@ -18,7 +18,8 @@ signal choice_made(target_id)
 @onready var _rich_text_label: RichTextLabel = $RichTextLabel
 @onready var _choice_selector: ChoiceSelector = $ChoiceSelector
 
-@onready var _tween: Tween = $Tween
+#@onready var _tween: Tween = $Tween
+@onready var _tween: Tween = create_tween()
 @onready var _blinking_arrow: Control = $RichTextLabel/BlinkingArrow
 
 @onready var _anim_player: AnimationPlayer = $FadeAnimationPlayer
@@ -32,7 +33,8 @@ func _ready() -> void:
 	_rich_text_label.text = ""
 	_rich_text_label.visible_characters = 0
 
-	_tween.connect("tween_all_completed", Callable(self, "_on_Tween_tween_all_completed"))
+	#_tween.connect("tween_all_completed", Callable(self, "_on_Tween_tween_all_completed"))
+	_tween.finished.connect(_on_tween_finished)
 	_choice_selector.connect("choice_made", Callable(self, "_on_ChoiceSelector_choice_made"))
 
 	_skip_button.connect("timer_ticked", Callable(self, "_on_SkipButton_timer_ticked"))
@@ -106,7 +108,7 @@ func fade_out_async() -> void:
 	await _anim_player.animation_finished
 
 
-func _on_Tween_tween_all_completed() -> void:
+func _on_tween_finished() -> void:
 	emit_signal("display_finished")
 	_blinking_arrow.show()
 

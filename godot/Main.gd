@@ -1,7 +1,8 @@
 extends Node
 
 
-@export (Array, String, FILE) var scripts
+#@export (Array, String, FILE) var scripts
+@export var scripts: Array[String]
 
 const ScenePlayer := preload("res://ScenePlayer.tscn")
 

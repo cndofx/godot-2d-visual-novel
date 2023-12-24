@@ -14,7 +14,8 @@ const COLOR_WHITE_TRANSPARENT = Color(1.0, 1.0, 1.0, 0.0)
 ## Keeps track of the character displayed on either side.
 var _displayed := {left = null, right = null}
 
-@onready var _tween: Tween = $Tween
+#@onready var _tween: Tween = $Tween
+@onready var _tween: Tween = create_tween()
 @onready var _left_sprite: Sprite2D = $Left
 @onready var _right_sprite: Sprite2D = $Right
 
@@ -22,7 +23,8 @@ var _displayed := {left = null, right = null}
 func _ready() -> void:
 	_left_sprite.hide()
 	_right_sprite.hide()
-	_tween.connect("tween_all_completed", Callable(self, "_on_Tween_tween_all_completed"))
+	#_tween.connect("tween_all_completed", Callable(self, "_on_Tween_tween_all_completed"))
+	_tween.finished.connect(_on_tween_finished)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -93,5 +95,5 @@ func _leave(from_side: String, sprite: Sprite2D) -> void:
 	_tween.seek(0.0)
 
 
-func _on_Tween_tween_all_completed() -> void:
+func _on_tween_finished() -> void:
 	emit_signal("display_finished")

@@ -146,7 +146,6 @@ func _disappear_async() -> void:
 
 ## Saves a dictionary representing a scene to the disk using `var2str`.
 func _store_scene_data(data: Dictionary, path: String) -> void:
-	var file := File.new()
-	file.open(path, File.WRITE)
+	var file = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(var_to_str(_scene_data))
 	file.close()

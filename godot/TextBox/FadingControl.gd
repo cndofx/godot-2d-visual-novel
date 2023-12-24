@@ -5,11 +5,12 @@ const COLOR_WHITE_TRANSPARENT := Color(1.0, 1.0, 1.0, 0.0)
 
 @export var appear_duration := 0.3
 
-var _tween := Tween.new()
+#var _tween := Tween.new()
+@onready var _tween := create_tween()
 
 
 func _ready() -> void:
-	add_child(_tween)
+	#add_child(_tween)
 	modulate = COLOR_WHITE_TRANSPARENT
 
 
