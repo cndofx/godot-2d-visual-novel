@@ -23,17 +23,17 @@ func get_background(background_id: String) -> Background:
 ## As we don't have generics in GDScript, we pass a function's name to do type checks.
 ## We call that function on each loaded resource with `call()`.
 func _load_resources(directory_path: String, check_type_function: String) -> Dictionary:
-	var directory := DirAccess.new()
-	if directory.open(directory_path) != OK:
+	var directory := DirAccess.open(directory_path)
+	if not directory:
 		return {}
 
 	var resources := {}
 
-	directory.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
+	directory.list_dir_begin()
 	var filename = directory.get_next()
 	while filename != "":
 		if filename.ends_with(".tres"):
-			var resource: Resource = load(directory_path.plus_file(filename))
+			var resource: Resource = load(directory_path.path_join(filename))
 
 			if not call(check_type_function, resource):
 				continue
