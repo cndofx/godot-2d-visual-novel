@@ -31,9 +31,9 @@ func _ready() -> void:
 	_rich_text_label.text = ""
 	_rich_text_label.visible_characters = 0
 
-	_choice_selector.connect("choice_made", Callable(self, "_on_ChoiceSelector_choice_made"))
+	_choice_selector.choice_made.connect(_on_ChoiceSelector_choice_made)
 
-	_skip_button.connect("timer_ticked", Callable(self, "_on_SkipButton_timer_ticked"))
+	_skip_button.timer_ticked.connect(_on_SkipButton_timer_ticked)
 
 
 func _unhandled_input(event: InputEvent) -> void:

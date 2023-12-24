@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://TextBox/TextBox.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://1y60hn4xxyhw" path="res://TextBox/BlinkingArrow.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://TextBox/ChoiceSelector.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://b3loy07swi311" path="res://TextBox/ChoiceSelector.tscn" id="3"]
 [ext_resource type="Theme" uid="uid://cnrdvogh8isdg" path="res://Theme/theme.tres" id="4"]
 [ext_resource type="Texture2D" uid="uid://drf6l100m8b4c" path="res://TextBox/text-box.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://ckh4m2snf6o4d" path="res://TextBox/character-name-box.png" id="6"]
@@ -235,6 +235,7 @@ offset_left = -244.0
 offset_top = -55.5
 offset_right = 215.0
 offset_bottom = 29.5
+theme_override_font_sizes/font_size = 40
 text = "Sophia"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -252,6 +253,11 @@ offset_top = -81.5
 offset_right = 690.0
 offset_bottom = 110.5
 mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 40
+theme_override_font_sizes/bold_font_size = 40
+theme_override_font_sizes/italics_font_size = 40
+theme_override_font_sizes/bold_italics_font_size = 40
+theme_override_font_sizes/mono_font_size = 40
 bbcode_enabled = true
 text = "Text body"
 scroll_active = false

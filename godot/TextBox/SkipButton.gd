@@ -7,9 +7,9 @@ signal timer_ticked
 
 
 func _ready() -> void:
-	connect("button_down", Callable(self, "_on_button_down"))
-	connect("button_up", Callable(self, "_on_button_up"))
-	_timer.connect("timeout", Callable(self, "_on_DelayTimer_timeout"))
+	button_down.connect(_on_button_down)
+	button_up.connect(_on_button_up)
+	_timer.timeout.connect(_on_DelayTimer_timeout)
 
 
 func _on_button_down() -> void:
