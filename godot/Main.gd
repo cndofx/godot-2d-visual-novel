@@ -1,7 +1,7 @@
 extends Node
 
 
-export (Array, String, FILE) var scripts
+@export (Array, String, FILE) var scripts
 
 const ScenePlayer := preload("res://ScenePlayer.tscn")
 
@@ -18,7 +18,7 @@ var transpiler := SceneTranspiler.new()
 
 func _ready() -> void:
 
-	if not scripts.empty():
+	if not scripts.is_empty():
 		for script in scripts:
 			var text := lexer.read_file_content(script)
 			var tokens: Array = lexer.tokenize(text)
@@ -42,11 +42,11 @@ func _play_scene(index: int) -> void:
 	if _scene_player:
 		_scene_player.queue_free()
 
-	_scene_player = ScenePlayer.instance()
+	_scene_player = ScenePlayer.instantiate()
 	add_child(_scene_player)
 	_scene_player.load_scene(SCENES[_current_index])
-	_scene_player.connect("scene_finished", self, "_on_ScenePlayer_scene_finished")
-	_scene_player.connect("restart_requested", self, "_on_ScenePlayer_restart_requested")
+	_scene_player.connect("scene_finished", Callable(self, "_on_ScenePlayer_scene_finished"))
+	_scene_player.connect("restart_requested", Callable(self, "_on_ScenePlayer_restart_requested"))
 	_scene_player.run_scene()
 
 

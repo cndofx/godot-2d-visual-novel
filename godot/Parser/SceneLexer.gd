@@ -1,6 +1,6 @@
 ## Reads a scene _text file and turns it into a list of `Token` objects, using its `tokenize()` method.
 class_name SceneLexer
-extends Reference
+extends RefCounted
 
 # The constants below list reserved keywords and built-in commands.
 const BUILT_IN_COMMANDS := {

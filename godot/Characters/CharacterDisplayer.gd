@@ -14,15 +14,15 @@ const COLOR_WHITE_TRANSPARENT = Color(1.0, 1.0, 1.0, 0.0)
 ## Keeps track of the character displayed on either side.
 var _displayed := {left = null, right = null}
 
-onready var _tween: Tween = $Tween
-onready var _left_sprite: Sprite = $Left
-onready var _right_sprite: Sprite = $Right
+@onready var _tween: Tween = $Tween
+@onready var _left_sprite: Sprite2D = $Left
+@onready var _right_sprite: Sprite2D = $Right
 
 
 func _ready() -> void:
 	_left_sprite.hide()
 	_right_sprite.hide()
-	_tween.connect("tween_all_completed", self, "_on_Tween_tween_all_completed")
+	_tween.connect("tween_all_completed", Callable(self, "_on_Tween_tween_all_completed"))
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -35,7 +35,7 @@ func display(character: Character, side: String = SIDE.LEFT, expression := "", a
 #	assert(side in SIDE.values())
 
 	# Keeps track of a character that's already displayed on a given side
-	var sprite: Sprite = _left_sprite if side == SIDE.LEFT else _right_sprite
+	var sprite: Sprite2D = _left_sprite if side == SIDE.LEFT else _right_sprite
 	if character == _displayed.left:
 		sprite = _left_sprite
 	elif character == _displayed.right:
@@ -52,7 +52,7 @@ func display(character: Character, side: String = SIDE.LEFT, expression := "", a
 
 
 ## Fades in and moves the character to the anchor position.
-func _enter(from_side: String, sprite: Sprite) -> void:
+func _enter(from_side: String, sprite: Sprite2D) -> void:
 	var offset := -200 if from_side == SIDE.LEFT else 200
 
 	var start := sprite.position + Vector2(offset, 0.0)
@@ -61,7 +61,7 @@ func _enter(from_side: String, sprite: Sprite) -> void:
 	_tween.interpolate_property(
 		sprite, "position", start, end, 0.5, Tween.TRANS_QUINT, Tween.EASE_OUT
 	)
-	_tween.interpolate_property(sprite, "modulate", COLOR_WHITE_TRANSPARENT, Color.white, 0.25)
+	_tween.interpolate_property(sprite, "modulate", COLOR_WHITE_TRANSPARENT, Color.WHITE, 0.25)
 	_tween.start()
 
 	# Set up the sprite
@@ -70,7 +70,7 @@ func _enter(from_side: String, sprite: Sprite) -> void:
 	sprite.modulate = COLOR_WHITE_TRANSPARENT
 
 
-func _leave(from_side: String, sprite: Sprite) -> void:
+func _leave(from_side: String, sprite: Sprite2D) -> void:
 	var offset := -200 if from_side == SIDE.LEFT else 200
 
 	var start := sprite.position
@@ -82,7 +82,7 @@ func _leave(from_side: String, sprite: Sprite) -> void:
 	_tween.interpolate_property(
 		sprite,
 		"modulate",
-		Color.white,
+		Color.WHITE,
 		COLOR_WHITE_TRANSPARENT,
 		0.25,
 		Tween.TRANS_LINEAR,

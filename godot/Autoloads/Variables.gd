@@ -10,7 +10,9 @@ func add_variable(name: String, value) -> void:
 	save_file.open(SAVE_FILE_LOCATION, File.READ_WRITE)
 
 	var data: Dictionary = (
-		parse_json(save_file.get_as_text())
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(save_file.get_as_text())
+		test_json_conv.get_data()
 		if save_file.get_as_text()
 		else {variables = {}}
 	)
@@ -21,7 +23,7 @@ func add_variable(name: String, value) -> void:
 
 		data["variables"][name] = _evaluate(value)
 
-	save_file.store_line(to_json(data))
+	save_file.store_line(JSON.new().stringify(data))
 	save_file.close()
 
 
@@ -34,7 +36,9 @@ func get_stored_variables_list() -> Dictionary:
 
 	save_file.open(SAVE_FILE_LOCATION, File.READ)
 
-	var data: Dictionary = parse_json(save_file.get_as_text())
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(save_file.get_as_text())
+	var data: Dictionary = test_json_conv.get_data()
 
 	save_file.close()
 
@@ -46,6 +50,6 @@ func _evaluate(input):
 	var script = GDScript.new()
 	script.set_source_code("func eval():\n\treturn " + input)
 	script.reload()
-	var obj = Reference.new()
+	var obj = RefCounted.new()
 	obj.set_script(script)
 	return obj.eval()

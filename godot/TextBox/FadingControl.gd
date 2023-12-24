@@ -3,7 +3,7 @@ extends Control
 
 const COLOR_WHITE_TRANSPARENT := Color(1.0, 1.0, 1.0, 0.0)
 
-export var appear_duration := 0.3
+@export var appear_duration := 0.3
 
 var _tween := Tween.new()
 
@@ -15,7 +15,7 @@ func _ready() -> void:
 
 func appear() -> void:
 	_tween.interpolate_property(
-		self, "modulate", COLOR_WHITE_TRANSPARENT, Color.white, appear_duration
+		self, "modulate", COLOR_WHITE_TRANSPARENT, Color.WHITE, appear_duration
 	)
 	_tween.start()
 	_tween.seek(0)
@@ -23,7 +23,7 @@ func appear() -> void:
 
 func disappear() -> void:
 	_tween.interpolate_property(
-		self, "modulate", Color.white, COLOR_WHITE_TRANSPARENT, appear_duration / 2.0
+		self, "modulate", Color.WHITE, COLOR_WHITE_TRANSPARENT, appear_duration / 2.0
 	)
 	_tween.start()
 	_tween.seek(0)
