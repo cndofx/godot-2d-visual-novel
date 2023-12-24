@@ -174,7 +174,9 @@ func tokenize(input_text: String) -> Array:
 		elif character.is_valid_identifier():
 			tokens.append(_tokenize_symbol(script))
 		else:
-			push_error("Found unidentified character: %s" % character)
+			push_error("Found unidentified character: '%s'" % character)
+			push_error("char code: %s" % character.to_utf8_buffer())
+			
 
 		script.move_to_next_character()
 

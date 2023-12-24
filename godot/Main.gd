@@ -6,7 +6,8 @@ extends Node
 
 const ScenePlayer := preload("res://ScenePlayer.tscn")
 
-const SCENES := []
+#const SCENES := []
+var scenes := []
 
 var _current_index := -1
 var _scene_player: ScenePlayer
@@ -18,7 +19,6 @@ var transpiler := SceneTranspiler.new()
 
 
 func _ready() -> void:
-
 	if not scripts.is_empty():
 		for script in scripts:
 			var text := lexer.read_file_content(script)
@@ -32,20 +32,23 @@ func _ready() -> void:
 			if not dialogue.nodes[dialogue.index - 1] is SceneTranspiler.JumpCommandNode:
 				(dialogue.nodes[dialogue.index - 1] as SceneTranspiler.BaseNode).next = -1
 
-			SCENES.append(dialogue)
+			#SCENES.append(dialogue)
+			scenes.append(dialogue)
 
 		_play_scene(0)
 
 
 func _play_scene(index: int) -> void:
-	_current_index = int(clamp(index, 0.0, SCENES.size() - 1))
+	#_current_index = int(clamp(index, 0.0, SCENES.size() - 1))
+	_current_index = int(clamp(index, 0.0, scenes.size() - 1))
 
 	if _scene_player:
 		_scene_player.queue_free()
 
 	_scene_player = ScenePlayer.instantiate()
 	add_child(_scene_player)
-	_scene_player.load_scene(SCENES[_current_index])
+	#_scene_player.load_scene(SCENES[_current_index])
+	_scene_player.load_scene(scenes[_current_index])
 	_scene_player.connect("scene_finished", Callable(self, "_on_ScenePlayer_scene_finished"))
 	_scene_player.connect("restart_requested", Callable(self, "_on_ScenePlayer_restart_requested"))
 	_scene_player.run_scene()
@@ -53,7 +56,8 @@ func _play_scene(index: int) -> void:
 
 func _on_ScenePlayer_scene_finished() -> void:
 	# If the scene that ended is the last scene, we're done playing the game.
-	if _current_index == SCENES.size() - 1:
+	#if _current_index == SCENES.size() - 1:
+	if _current_index == scenes.size() - 1:
 		return
 	_play_scene(_current_index + 1)
 
